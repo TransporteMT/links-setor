@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portal TR RD Saúde - MT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --verde-principal: #00a65a;
+      --verde-escuro: #007944;
+      --verde-claro: #e6f7f0;
+      --cinza-claro: #f5f5f5;
+      --cinza-texto: #555555;
+      --perigo: #e74c3c;
+      --branco: #ffffff;
+      --sombra-card: 0 4px 10px rgba(0, 0, 0, 0.08);
+      --radius-card: 14px;
+      --transicao: 0.2s ease-in-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f8fffb, #e8f7f0);
+      min-height: 100vh;
+      color: var(--cinza-texto);
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .app-container {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 20px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+      max-width: 1120px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--verde-escuro), var(--verde-principal));
+      padding: 18px 22px;
+      color: var(--branco);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .header-text h1 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .header-text p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    main {
+      padding: 18px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .intro {
+      background: var(--verde-claro);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .intro-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--branco);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--verde-escuro);
+      font-size: 18px;
+    }
+
+    .intro-text h2 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .intro-text p {
+      font-size: 12px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--branco);
+      border-radius: var(--radius-card);
+      box-shadow: var(--sombra-card);
+      padding: 14px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 166, 90, 0.04),
+        rgba(0, 166, 90, 0.08)
+      );
+      opacity: 0;
+      transition: opacity var(--transicao);
+      pointer-events: none;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: var(--verde-claro);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--verde-escuro);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #333333;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: #888888;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .card-btn {
+      flex: 1;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--verde-principal);
+      color: var(--branco);
+      transition: background var(--transicao), transform var(--transicao),
+        box-shadow var(--transicao);
+      box-shadow: 0 4px 8px rgba(0, 166, 90, 0.25);
+    }
+
+    .card-btn:hover {
+      background: var(--verde-escuro);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0, 166, 90, 0.35);
+    }
+
+    .card-btn span.icon {
+      font-size: 16px;
+      display: inline-flex;
+    }
+
+    .badge-lock {
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: rgba(0, 0, 0, 0.04);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #777777;
+    }
+
+    .badge-lock span {
+      font-size: 13px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--branco);
+      border-radius: 16px;
+      padding: 18px 18px 14px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      animation: slideIn 0.18s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(10px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .modal-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .modal-lock {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--verde-claro);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--verde-escuro);
+      font-size: 16px;
+    }
+
+    .modal-close-btn {
+      border: none;
+      background: transparent;
+      font-size: 18px;
+      cursor: pointer;
+      color: #999999;
+      padding: 2px 4px;
+    }
+
+    .modal-body {
+      font-size: 13px;
+      margin-bottom: 10px;
+      color: #555555;
+    }
+
+    .modal-body strong {
+      color: var(--verde-escuro);
+    }
+
+    .modal-input-group {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .modal-input-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666666;
+    }
+
+    .modal-input-group input {
+      border-radius: 999px;
+      border: 1px solid #cccccc;
+      padding: 7px 10px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color var(--transicao), box-shadow var(--transicao);
+    }
+
+    .modal-input-group input:focus {
+      border-color: var(--verde-principal);
+      box-shadow: 0 0 0 2px rgba(0, 166, 90, 0.16);
+    }
+
+    .modal-error {
+      font-size: 12px;
+      color: var(--perigo);
+      min-height: 16px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-outline {
+      border-radius: 999px;
+      border: 1px solid #cccccc;
+      background: #f7f7f7;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #555555;
+    }
+
+    .btn-main {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--verde-principal);
+      color: var(--branco);
+      box-shadow: 0 3px 6px rgba(0, 166, 90, 0.3);
+      transition: background var(--transicao), transform var(--transicao);
+    }
+
+    .btn-main:hover {
+      background: var(--verde-escuro);
+      transform: translateY(-1px);
+    }
+
+    .modal-hint {
+      font-size: 11px;
+      color: #888888;
+      margin-top: 4px;
+    }
+
+    footer {
+      padding: 8px 18px 12px;
+      border-top: 1px solid #f0f0f0;
+      font-size: 11px;
+      color: #999999;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 14px 14px;
+      }
+      .header-text h1 {
+        font-size: 16px;
+      }
+      main {
+        padding: 14px 12px 14px;
+      }
+      .card-title {
+        font-size: 13px;
+      }
+      .card-subtitle {
+        font-size: 11px;
+      }
+      .card-btn {
+        font-size: 12px;
+      }
+      .app-container {
+        border-radius: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="logo-circle">RD</div>
+      <div class="header-text">
+        <h1>Painel de Acessos - Transporte MT</h1>
+        <p>Escolha o botão e siga para a tela desejada.</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div class="intro-icon">🧭</div>
+        <div class="intro-text">
+          <h2>Vamos facilitar o dia?</h2>
+          <p>Toque no cartão e depois no botão verde. Se aparecer um cadeado, consulte o codico no grupo ADM TR.</p>
+        </div>
+      </section>
+<div class="datetime-box" id="datetime"></div>
+      <section class="cards-grid">
+
+<!-- LIVRES -->
+        <article class="card" data-type="free" data-url="https://www.canva.com/design/DAG6F0C7EKs/afblfUhG5cAjo-rwnWDXiQ/view">
+          <div class="card-header">
+            <div class="card-icon">📰</div>
+            <div>
+              <div class="card-title">Jornal digital</div>
+              <div class="card-subtitle">Notícias e comunicados do time.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">📖</span>
+              <span>Ler jornal</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="card" data-type="free" data-url="https://surveymars.com/q/mYiOUOABb">
+          <div class="card-header">
+            <div class="card-icon">📝</div>
+            <div>
+              <div class="card-title">Abertura de chamado</div>
+              <div class="card-subtitle">Solicitação aos ADM.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">📨</span>
+              <span>Preencher formulário</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="card" data-type="free" data-url="https://surveymars.com/q/itfJF9s9C">
+          <div class="card-header">
+            <div class="card-icon">🚚</div>
+            <div>
+              <div class="card-title">Registro de veículos na doca </div>
+              <div class="card-subtitle">Controle docas.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">✏️</span>
+              <span>Registrar veículo</span>
+            </button>
+          </div>
+        </article>
+
+        <article class="card" data-type="free" data-url="https://raiadrogasil.lgcloud.com.br/saml/auto/portaldagente">
+          <div class="card-header">
+            <div class="card-icon">👥</div>
+            <div>
+              <div class="card-title">RH - Portal da Gente</div>
+              <div class="card-subtitle">Espaço do colaborador.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">👀</span>
+              <span>Abrir portal</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- RESTRITOS -->
+
+ <article class="card" data-type="restricted" data-url="https://rdcombr.sharepoint.com/:f:/r/sites/TRANSPORTE-MATOGROSSO/TRANSPORTE%20MT/CONTROLES/USO%20DI">
+          <div class="card-header">
+            <div class="card-icon">📁</div>
+            <div>
+              <div class="card-title">Pasta de uso diário</div>
+              <div class="card-subtitle">Atalhos e controles usados todo dia.</div>
+            </div>
+          </div>
+           <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">🔓</span>
+              <span>Abrir Arquivos</span>
+            </button>
+            <span class="badge-lock">
+              <span>🔒</span>
+              acesso</span>
+          </div>
+        </article>
+
+        <article class="card" data-type="restricted" data-url="https://rdcombr.sharepoint.com/:x:/r/sites/TRANSPORTE-MATOGROSSO/TRANSPORTE%20MT/CONTROLES/CHECKLIST/CONTROLE%20CHECKLIST%20SEGURAN%C3%87A.xlsx?d=wf1489459b76c4eb1b30d7adeb566e075&csf=1&web=1&e=WvypDN">
+          <div class="card-header">
+            <div class="card-icon">✅</div>
+            <div>
+              <div class="card-title">Checklist veículo a vencer</div>
+              <div class="card-subtitle">Checklist Diário.</div>
+            </div>
+          </div>
+           <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">🔓</span>
+              <span>Abrir planilha</span>
+            </button>
+            <span class="badge-lock">
+              <span>🔒</span>
+              acesso</span>
+          </div>
+        </article>
+
+        <article class="card" data-type="restricted" data-url="http://scipdmt01.raiadrogasil.com.br/sci/bi/?perspective=authoring&id=i308D2EBC6BF945F3A7A733D7">
+          <div class="card-header">
+            <div class="card-icon">📦</div>
+            <div>
+              <div class="card-title">Entrada de expedição </div>
+              <div class="card-subtitle">Acompanhar Expedição.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">🔓</span>
+              <span>Abrir SCI</span>
+            </button>
+            <span class="badge-lock">
+              <span>🔒</span>
+              acesso</span>
+          </div>
+        </article>
+
+        <article class="card" data-type="restricted" data-url="https://rdcombr.sharepoint.com/:x:/s/TRANSPORTE-MATOGROSSO/EX6OWoZj0iFGnZw-hrfxSfEBBFg2SyGSdFiBphTwmJNpSQ">
+          <div class="card-header">
+            <div class="card-icon">🛒</div>
+            <div>
+              <div class="card-title">Solicitação de compras</div>
+              <div class="card-subtitle">Uso interno (ADM).</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">🔓</span>
+              <span>Abrir planilha</span>
+            </button>
+            <span class="badge-lock">
+              <span>🔒</span>
+              acesso</span>
+          </div>
+        </article>
+
+        <article class="card" data-type="restricted" data-url="https://rdcombr.sharepoint.com/:u:/r/sites/TRANSPORTE-MATOGROSSO/TRANSPORTE%20MT/PESSOAL/MAX/CONSUMO%20TR%20MT.pbix?csf=1&web=1&e=m7XNme">
+          <div class="card-header">
+            <div class="card-icon">📊</div>
+            <div>
+              <div class="card-title">Análise de consumo - E.S.G e Checklist Motorista</div>
+              <div class="card-subtitle">Indicadores de consumo, ESG e checklists.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">🔓</span>
+              <span>Abrir análise</span>
+            </button>
+            <span class="badge-lock">
+              <span>🔒</span>
+              acesso</span>
+          </div>
+        </article>
+
+        <article class="card" data-type="restricted" data-url="https://centrord.service-now.com/esc?id=sc_cat_item&sys_id=fd8729281bd599101360844fe54bcb86">
+          <div class="card-header">
+            <div class="card-icon">❗</div>
+            <div>
+              <div class="card-title">Chamado matriz - Erro faturamento</div>
+              <div class="card-subtitle">Abrir chamado para problemas de faturamento.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">🔓</span>
+              <span>Abrir Service Now</span>
+            </button>
+            <span class="badge-lock">
+              <span>🔒</span>
+              acesso</span>
+          </div>
+        </article>
+
+        <article class="card" data-type="restricted" data-url="https://monitor.tecnospeed.com.br/?&filter-uf=mt&filter-by-chart=time&filter-type-chart=line">
+          <div class="card-header">
+            <div class="card-icon">🧾</div>
+            <div>
+              <div class="card-title">Verificar situação SEFAZ disponibilidade</div>
+              <div class="card-subtitle">Ver status de autorização de notas fiscais e situação SEFAZ MT.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">🔓</span>
+              <span>Abrir SEFAZ</span>
+            </button>
+            <span class="badge-lock">
+              <span>🔒</span>
+              acesso</span>
+          </div>
+        </article>
+
+        <article class="card" data-type="restricted" data-url="https://wmospdmt01.raiadrogasil.com.br:20001/login.jsp">
+          <div class="card-header">
+            <div class="card-icon">🏭</div>
+            <div>
+              <div class="card-title">Manhattan Associates (Consultas) </div>
+              <div class="card-subtitle">Sistema de gestão de armazém (WMS).</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="card-btn">
+              <span class="icon">🔓</span>
+              <span>Abrir sistema</span>
+            </button>
+            <span class="badge-lock">
+              <span>🔒</span>
+              acesso</span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <span>RD Saúde · Transporte MT</span>
+      <span>Em caso de dúvida, fale com Max Mutz dos Santos .</span>
+    </footer>
+  </div>
+
+  <!-- Modal código -->
+  <div class="modal-backdrop" id="codeModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">
+          <div class="modal-lock">🔒</div>
+          <span>Área com cadeado</span>
+        </div>
+        <button class="modal-close-btn" aria-label="Fechar" id="btnModalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Digite o código de acesso combinado com o time para entrar nesta área.</p>
+        <p><strong>Nunca compartilhe com pessoas de fora.</strong></p>
+      </div>
+      <div class="modal-input-group">
+        <label for="codeInput">Código de acesso</label>
+        <input type="password" id="codeInput" inputmode="numeric" autocomplete="off" />
+      </div>
+      <div class="modal-error" id="codeError"></div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="btnModalCancel">Cancelar</button>
+        <button class="btn-main" id="btnModalOk">Entrar</button>
+      </div>
+      <p class="modal-hint">Dica: se você não souber o código, peça ajuda ao gestor.</p>
+    </div>
+  </div>
+
+  <script>
+        const CORRECT_HASH =
+      "535a3377d9ae45dd806e0f158ad5cb0d22913a504a60f4da381902279bed2b18";
+
+    let pendingUrl = null;
+
+    function sha256(str) {
+      const buffer = new TextEncoder().encode(str);
+      return crypto.subtle.digest("SHA-256", buffer).then((hash) => {
+        const hashArray = Array.from(new Uint8Array(hash));
+        const hashHex = hashArray
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+        return hashHex;
+      });
+    }
+
+    const modalBackdrop = document.getElementById("codeModal");
+    const codeInput = document.getElementById("codeInput");
+    const codeError = document.getElementById("codeError");
+    const btnModalClose = document.getElementById("btnModalClose");
+    const btnModalCancel = document.getElementById("btnModalCancel");
+    const btnModalOk = document.getElementById("btnModalOk");
+
+    function openModal(url) {
+      pendingUrl = url;
+      codeInput.value = "";
+      codeError.textContent = "";
+      modalBackdrop.classList.add("show");
+      setTimeout(() => {
+        codeInput.focus();
+      }, 80);
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove("show");
+      pendingUrl = null;
+    }
+
+    function validateCode() {
+      const value = codeInput.value.trim();
+      if (!value) {
+        codeError.textContent = "Digite o código para continuar.";
+        return;
+      }
+      sha256(value).then((hash) => {
+        if (hash === CORRECT_HASH) {
+          codeError.textContent = "";
+          const urlToOpen = pendingUrl;
+          closeModal();
+          if (urlToOpen && urlToOpen !== "#") {
+            window.open(urlToOpen, "_blank");
+          } else if (urlToOpen === "#") {
+            alert(
+              "Abra o arquivo CONTROLE CHECKLIST SEGURANÇA.xlsx na pasta de uso diário."
+            );
+          }
+        } else {
+          codeError.textContent = "Código incorreto. Tente novamente.";
+        }
+      });
+    }
+
+    document.querySelectorAll(".card-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".card");
+        const type = card.getAttribute("data-type");
+        const url = card.getAttribute("data-url") || "#";
+
+        if (type === "restricted") {
+          openModal(url);
+        } else {
+          if (url && url !== "#") {
+            window.open(url, "_blank");
+          } else {
+            alert(
+              "Este botão depende de um arquivo local:\nCONTROLE CHECKLIST SEGURANÇA.xlsx"
+            );
+          }
+        }
+      });
+    });
+
+    btnModalClose.addEventListener("click", closeModal);
+    btnModalCancel.addEventListener("click", closeModal);
+
+    modalBackdrop.addEventListener("click", (e) => {
+      if (e.target === modalBackdrop) {
+        closeModal();
+      }
+    });
+
+    codeInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        validateCode();
+      } else if (e.key === "Escape") {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modalBackdrop.classList.contains("show")) {
+        closeModal();
+      }
+    });
+
+    btnModalOk.addEventListener("click", validateCode);
+  </script>
+</body>
+</html>
